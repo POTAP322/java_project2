@@ -1,0 +1,38 @@
+package com.example.dao;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import com.example.models.SellRequest;
+public class SellRequestDAO {
+    public void createSellRequest(SellRequest request) throws SQLException {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "INSERT INTO sell_requests (seller_id, name, description, price) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, request.getSellerId());
+                ps.setString(2, request.getName());
+                ps.setString(3, request.getDescription());
+                ps.setInt(4, request.getPrice());
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    public List<SellRequest> getAllRequests() throws SQLException {
+        List<SellRequest> requests = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM sell_requests")) {
+            while (rs.next()) {
+                SellRequest r = new SellRequest();
+                r.setId(rs.getInt("id"));
+                r.setSellerId(rs.getInt("seller_id"));
+                r.setName(rs.getString("name"));
+                r.setDescription(rs.getString("description"));
+                r.setPrice(rs.getInt("price"));
+                r.setCreatedAt(rs.getTimestamp("created_at"));
+                requests.add(r);
+            }
+        }
+        return requests;
+    }
+}

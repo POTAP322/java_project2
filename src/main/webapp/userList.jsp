@@ -5,54 +5,66 @@
     <title>User List</title>
 </head>
 <body>
-    <h2>Employee List</h2>
-    <c:if test="${empty employeeList}">
-        <p>No employees found.</p>
-    </c:if>
-    <c:if test="${not empty employeeList}">
-        <table border="1">
+<h2>Buyers</h2>
+<c:if test="${empty buyerList}">
+    <p>No buyers found.</p>
+</c:if>
+<c:if test="${not empty buyerList}">
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Full Name</th>
+            <th>Email</th>
+        </tr>
+        <c:forEach var="buyer" items="${buyerList}">
             <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Full Name</th>
-                <th>Email</th>
+                <td>${buyer.id}</td>
+                <td>${buyer.username}</td>
+                <td>${buyer.role}</td>
+                <td>${buyer.buyerFullName}</td>
+                <td>${buyer.email}</td>
             </tr>
-            <c:forEach var="employee" items="${employeeList}">
-                <tr>
-                    <td>${employee.id}</td>
-                    <td>${employee.username}</td>
-                    <td>${employee.role}</td>
-                    <td>${employee.fullName}</td>
-                    <td>${employee.email}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+        </c:forEach>
+    </table>
+</c:if>
 
-    <h2>Employer List</h2>
-    <c:if test="${empty employerList}">
-        <p>No employers found.</p>
-    </c:if>
-    <c:if test="${not empty employerList}">
-        <table border="1">
+<h2>Sellers</h2>
+<c:if test="${empty sellerList}">
+    <p>No sellers found.</p>
+</c:if>
+<c:if test="${not empty sellerList}">
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Contact Person</th>
+            <th>Company Name</th>
+        </tr>
+        <c:forEach var="seller" items="${sellerList}">
             <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Full Name</th>
-                <th>Company Name</th>
+                <td>${seller.id}</td>
+                <td>${seller.username}</td>
+                <td>${seller.role}</td>
+                <td>${seller.sellerFullName}</td>
+                <td>${seller.companyName}</td>
             </tr>
-            <c:forEach var="employer" items="${employerList}">
-                <tr>
-                    <td>${employer.id}</td>
-                    <td>${employer.username}</td>
-                    <td>${employer.role}</td>
-                    <td>${employer.employerFullName}</td>
-                    <td>${employer.companyName}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+        </c:forEach>
+    </table>
+</c:if>
+
+<h2>Administrators</h2>
+<c:if test="${empty adminList}">
+    <p>No admins found.</p>
+</c:if>
+<c:if test="${not empty adminList}">
+    <ul>
+        <c:forEach var="admin" items="${adminList}">
+            <li>${admin.username}</li>
+        </c:forEach>
+    </ul>
+</c:if>
 </body>
 </html>

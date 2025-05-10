@@ -1,0 +1,50 @@
+package com.example.dao;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import com.example.models.PurchaseOrder;
+public class PurchaseOrderDAO {
+    public void createOrder(PurchaseOrder order) throws SQLException {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "INSERT INTO purchase_orders (buyer_id, sell_request_id) VALUES (?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, order.getBuyerId());
+                ps.setInt(2, order.getSellRequestId());
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    public List<PurchaseOrder> getOrdersBySeller(int sellerId) throws SQLException {
+        List<PurchaseOrder> orders = new ArrayList<>();
+        String sql = "SELECT po.id, po.buyer_id, po.sell_request_id, po.status " +
+                "FROM purchase_orders po " +
+                "JOIN sell_requests sr ON po.sell_request_id = sr.id " +
+                "WHERE sr.seller_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, sellerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    PurchaseOrder o = new PurchaseOrder();
+                    o.setId(rs.getInt("id"));
+                    o.setBuyerId(rs.getInt("buyer_id"));
+                    o.setSellRequestId(rs.getInt("sell_request_id"));
+                    o.setStatus(rs.getString("status"));
+                    orders.add(o);
+                }
+            }
+        }
+        return orders;
+    }
+
+    public void updateOrderStatus(int orderId, String status) throws SQLException {
+        String sql = "UPDATE purchase_orders SET status = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        }
+    }
+}

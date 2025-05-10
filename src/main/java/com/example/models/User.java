@@ -5,9 +5,9 @@ public class User {
     private String username;
     private String password;
     private String role;
-    private String fullName;
+    private String buyerFullName;
     private String email;
-    private String employerFullName;
+    private String sellerFullName;
     private String companyName;
 
     // Геттеры и сеттеры для всех полей
@@ -43,12 +43,12 @@ public class User {
         this.role = role;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getBuyerFullName() {
+        return buyerFullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setBuyerFullName(String buyerFullName) {
+        this.buyerFullName = buyerFullName;
     }
 
     public String getEmail() {
@@ -59,12 +59,12 @@ public class User {
         this.email = email;
     }
 
-    public String getEmployerFullName() {
-        return employerFullName;
+    public String getSellerFullName() {
+        return sellerFullName;
     }
 
-    public void setEmployerFullName(String employerFullName) {
-        this.employerFullName = employerFullName;
+    public void setSellerFullName(String sellerFullName) {
+        this.sellerFullName = sellerFullName;
     }
 
     public String getCompanyName() {

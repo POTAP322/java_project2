@@ -1,7 +1,8 @@
 package com.example.servlets;
 
-import com.example.dao.UserDAO;
+import com.example.service.UserService;
 import com.example.models.User;
+import com.example.dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,29 +16,44 @@ import java.util.List;
 
 @WebServlet("/users")
 public class UserListServlet extends HttpServlet {
-    private UserDAO userDAO = new UserDAO();
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        UserDAO userDAO = new UserDAO();
+        userService = new UserService(userDAO);
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<User> employeeList = new ArrayList<>();
-        List<User> employerList = new ArrayList<>();
+        List<User> buyerList = new ArrayList<>();
+        List<User> sellerList = new ArrayList<>();
+        List<User> adminList = new ArrayList<>();
 
         try {
-            List<User> users = userDAO.getAllUsers();
+            List<User> users = userService.getAllUsers();
             for (User user : users) {
-                if ("EMPLOYEE".equals(user.getRole())) {
-                    employeeList.add(user);
-                } else if ("EMPLOYER".equals(user.getRole())) {
-                    employerList.add(user);
+                switch (user.getRole()) {
+                    case "EMPLOYEE":
+                        buyerList.add(user);
+                        break;
+                    case "EMPLOYER":
+                        sellerList.add(user);
+                        break;
+                    case "ADMIN":
+                        adminList.add(user);
+                        break;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to retrieve users");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Не удалось загрузить список пользователей");
             return;
         }
 
-        request.setAttribute("employeeList", employeeList);
-        request.setAttribute("employerList", employerList);
+        request.setAttribute("buyerList", buyerList);
+        request.setAttribute("sellerList", sellerList);
+        request.setAttribute("adminList", adminList);
         request.getRequestDispatcher("/userList.jsp").forward(request, response);
     }
 }
