@@ -20,4 +20,10 @@ public class SellRequestService {
     public List<SellRequest> getAllRequests() throws SQLException {
         return sellRequestDAO.getAllRequests();
     }
+    /**
+     * Получает все заявки на продажу, созданные конкретным продавцом
+     */
+    public List<SellRequest> getSellRequestsBySeller(int sellerId) throws SQLException {
+        return sellRequestDAO.getSellRequestsBySeller(sellerId);
+    }
 }

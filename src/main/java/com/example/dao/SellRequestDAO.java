@@ -35,4 +35,31 @@ public class SellRequestDAO {
         }
         return requests;
     }
+    /**
+     * Получает все заявки на продажу, созданные конкретным продавцом
+     */
+    public List<SellRequest> getSellRequestsBySeller(int sellerId) throws SQLException {
+        List<SellRequest> requests = new ArrayList<>();
+        String sql = "SELECT id, seller_id, name, description, price, created_at FROM sell_requests WHERE seller_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, sellerId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    SellRequest request = new SellRequest();
+                    request.setId(rs.getInt("id"));
+                    request.setSellerId(rs.getInt("seller_id"));
+                    request.setName(rs.getString("name"));
+                    request.setDescription(rs.getString("description"));
+                    request.setPrice(rs.getInt("price"));
+                    request.setCreatedAt(rs.getTimestamp("created_at")); // если есть поле createdAt
+                    requests.add(request);
+                }
+            }
+        }
+        return requests;
+    }
 }

@@ -37,6 +37,34 @@ public class PurchaseOrderDAO {
         }
         return orders;
     }
+    /**
+     * Получает все заказы, сделанные определённым покупателем
+     */
+    public List<PurchaseOrder> getOrdersByBuyer(int buyerId) throws SQLException {
+        List<PurchaseOrder> orders = new ArrayList<>();
+        String sql = "SELECT id, buyer_id, sell_request_id, status, created_at " +
+                "FROM purchase_orders " +
+                "WHERE buyer_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, buyerId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    PurchaseOrder order = new PurchaseOrder();
+                    order.setId(rs.getInt("id"));
+                    order.setBuyerId(rs.getInt("buyer_id"));
+                    order.setSellRequestId(rs.getInt("sell_request_id"));
+                    order.setStatus(rs.getString("status"));
+                    order.setCreatedAt(rs.getTimestamp("created_at")); // если есть поле createdAt
+                    orders.add(order);
+                }
+            }
+        }
+        return orders;
+    }
 
     public void updateOrderStatus(int orderId, String status) throws SQLException {
         String sql = "UPDATE purchase_orders SET status = ? WHERE id = ?";

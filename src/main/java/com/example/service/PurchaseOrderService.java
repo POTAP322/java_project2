@@ -24,4 +24,8 @@ public class PurchaseOrderService {
     public void updateOrderStatus(int orderId, String status) throws SQLException {
         purchaseOrderDAO.updateOrderStatus(orderId, status);
     }
+
+    public List<PurchaseOrder> getOrdersByBuyer(int buyerId) throws SQLException {
+        return purchaseOrderDAO.getOrdersByBuyer(buyerId);
+    }
 }

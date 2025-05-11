@@ -23,9 +23,9 @@ public class UserDAO {
                     }
                 }
 
-                if ("EMPLOYEE".equals(user.getRole())) {
+                if ("BUYER".equals(user.getRole())) {
                     insertBuyer(connection, userId, user.getBuyerFullName(), user.getEmail());
-                } else if ("EMPLOYER".equals(user.getRole())) {
+                } else if ("SELLER".equals(user.getRole())) {
                     insertSeller(connection, userId, user.getSellerFullName(), user.getCompanyName());
                 }
             }
@@ -55,7 +55,9 @@ public class UserDAO {
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "SELECT u.id, u.username, u.role, b.full_name AS buyer_full_name, b.email, s.full_name AS seller_full_name, s.company_name " +
+            String sql = "SELECT u.id, u.username, u.password, u.role, " +
+                    "b.full_name AS buyer_full_name, b.email, " +
+                    "s.full_name AS seller_full_name, s.company_name " +
                     "FROM users u " +
                     "LEFT JOIN buyers b ON u.id = b.user_id " +
                     "LEFT JOIN sellers s ON u.id = s.user_id";
@@ -65,6 +67,7 @@ public class UserDAO {
                         User user = new User();
                         user.setId(resultSet.getInt("id"));
                         user.setUsername(resultSet.getString("username"));
+                        user.setPassword(resultSet.getString("password")); // ✅ Теперь здесь
                         user.setRole(resultSet.getString("role"));
                         user.setBuyerFullName(resultSet.getString("buyer_full_name"));
                         user.setEmail(resultSet.getString("email"));
