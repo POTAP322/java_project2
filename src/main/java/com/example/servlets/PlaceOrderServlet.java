@@ -26,22 +26,36 @@ public class PlaceOrderServlet extends HttpServlet {
         this.purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
-        int requestId = Integer.parseInt(request.getParameter("request_id"));
+        if (user == null || !"BUYER".equals(user.getRole())) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Только покупатель может оформлять заказы");
+            return;
+        }
 
-        PurchaseOrder order = new PurchaseOrder();
-        order.setBuyerId(user.getId());
-        order.setSellRequestId(requestId);
+        int sellRequestId = Integer.parseInt(request.getParameter("request_id"));
 
         try {
+            // Проверяем, не заказывал ли уже пользователь эту заявку
+            if (purchaseOrderService.isAlreadyOrdered(user.getId(), sellRequestId)) {
+                response.sendRedirect("home?warning=already_ordered");
+                return;
+            }
+
+            // Создаем новый заказ
+            PurchaseOrder order = new PurchaseOrder();
+            order.setBuyerId(user.getId());
+            order.setSellRequestId(sellRequestId);
+            order.setStatus("PENDING");
             purchaseOrderService.createOrder(order);
+
             response.sendRedirect("home");
+
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Ошибка при оформлении заказа");
+            response.sendRedirect("home?error=order_failed");
         }
     }
 }

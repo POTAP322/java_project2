@@ -3,6 +3,7 @@
 <div style="margin-bottom: 20px;">
     <c:if test="${not empty user}">
         <strong>Вы вошли как:</strong> ${user.username} (${user.role}) |
+        <a href="home">Домой</a> |
         <c:if test="${user.role == 'BUYER'}">
             <a href="buyer-menu">Меню покупателя</a>
         </c:if>

@@ -28,4 +28,8 @@ public class PurchaseOrderService {
     public List<PurchaseOrder> getOrdersByBuyer(int buyerId) throws SQLException {
         return purchaseOrderDAO.getOrdersByBuyer(buyerId);
     }
+    public boolean isAlreadyOrdered(int buyerId, int sellRequestId) throws SQLException {
+        return purchaseOrderDAO.hasBuyerAlreadyOrdered(buyerId, sellRequestId);
+    }
+
 }

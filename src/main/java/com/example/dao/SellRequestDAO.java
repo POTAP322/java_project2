@@ -6,7 +6,7 @@ import com.example.models.SellRequest;
 public class SellRequestDAO {
     public void createSellRequest(SellRequest request) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO sell_requests (seller_id, name, description, price) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO sell_requests (seller_id, name, description, price, created_at) VALUES (?, ?, ?, ?, NOW())";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setInt(1, request.getSellerId());
                 ps.setString(2, request.getName());
@@ -55,7 +55,7 @@ public class SellRequestDAO {
                     request.setName(rs.getString("name"));
                     request.setDescription(rs.getString("description"));
                     request.setPrice(rs.getInt("price"));
-                    request.setCreatedAt(rs.getTimestamp("created_at")); // если есть поле createdAt
+                    request.setCreatedAt(rs.getTimestamp("created_at"));
                     requests.add(request);
                 }
             }

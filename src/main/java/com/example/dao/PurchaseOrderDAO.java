@@ -5,13 +5,13 @@ import java.util.List;
 import com.example.models.PurchaseOrder;
 public class PurchaseOrderDAO {
     public void createOrder(PurchaseOrder order) throws SQLException {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO purchase_orders (buyer_id, sell_request_id) VALUES (?, ?)";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, order.getBuyerId());
-                ps.setInt(2, order.getSellRequestId());
-                ps.executeUpdate();
-            }
+        String sql = "INSERT INTO purchase_orders (buyer_id, sell_request_id, status, created_at) VALUES (?, ?, ?, NOW())";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, order.getBuyerId());
+            ps.setInt(2, order.getSellRequestId());
+            ps.setString(3, "PENDING");
+            ps.executeUpdate();
         }
     }
 
@@ -74,5 +74,19 @@ public class PurchaseOrderDAO {
             ps.setInt(2, orderId);
             ps.executeUpdate();
         }
+    }
+    public boolean hasBuyerAlreadyOrdered(int buyerId, int sellRequestId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM purchase_orders WHERE buyer_id = ? AND sell_request_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, buyerId);
+            ps.setInt(2, sellRequestId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // true, если есть запись
+                }
+            }
+        }
+        return false;
     }
 }

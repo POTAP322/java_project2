@@ -2,10 +2,12 @@ package com.example.servlets;
 
 import com.example.dao.PurchaseOrderDAO;
 import com.example.dao.SellRequestDAO;
+import com.example.dao.SellerDAO;
 import com.example.models.PurchaseOrder;
 import com.example.models.SellRequest;
 import com.example.service.PurchaseOrderService;
 import com.example.service.SellRequestService;
+import com.example.service.SellerService;
 import com.example.service.UserService;
 import com.example.models.User;
 import com.example.dao.UserDAO;
@@ -24,25 +26,42 @@ import java.util.List;
 public class SellerMenuServlet extends HttpServlet {
     private SellRequestService sellRequestService;
     private PurchaseOrderService purchaseOrderService;
+    private SellerService sellerService;
 
     @Override
     public void init() {
-        this.sellRequestService = new SellRequestService(new SellRequestDAO());
-        this.purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
+        SellRequestDAO requestDAO = new SellRequestDAO();
+        PurchaseOrderDAO orderDAO = new PurchaseOrderDAO();
+        SellerDAO sellerDAO = new SellerDAO();
+
+        this.sellRequestService = new SellRequestService(requestDAO);
+        this.purchaseOrderService = new PurchaseOrderService(orderDAO);
+        this.sellerService = new SellerService(sellerDAO);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
+        if (user == null || !"SELLER".equals(user.getRole())) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Доступ запрещён");
+            return;
+        }
+
         try {
-            List<SellRequest> myRequests = sellRequestService.getSellRequestsBySeller(user.getId());
+            // Получаем seller_id из sellers по user.id
+            int sellerId = sellerService.getSellerIdByUserId(user.getId());
+
+            // Заявки этого продавца
+            List<SellRequest> myRequests = sellRequestService.getSellRequestsBySeller(sellerId);
             request.setAttribute("myRequests", myRequests);
 
-            List<PurchaseOrder> allOrders = purchaseOrderService.getOrdersBySeller(user.getId());
+            // Отклики на заявки этого продавца
+            List<PurchaseOrder> allOrders = purchaseOrderService.getOrdersBySeller(sellerId);
             request.setAttribute("allOrders", allOrders);
 
             request.getRequestDispatcher("/sellerMenu.jsp").forward(request, response);
+
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Не удалось загрузить данные");
