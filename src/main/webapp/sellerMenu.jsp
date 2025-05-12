@@ -50,7 +50,13 @@
     <c:if test="${not empty allOrders}">
         <ul>
             <c:forEach var="o" items="${allOrders}">
-                <li>Пользователь ID: ${o.buyerId}, Заявка ID: ${o.sellRequestId}, статус: ${o.status}</li>
+                <li>
+                    Пользователь ID: ${o.buyerId},
+                    Имя: ${o.buyerFullName},
+                    Email: ${o.buyerEmail},
+                    Заявка ID: ${o.sellRequestId},
+                    Статус: ${o.status}
+                </li>
             </c:forEach>
         </ul>
     </c:if>

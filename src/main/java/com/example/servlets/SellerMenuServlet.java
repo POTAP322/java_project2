@@ -1,16 +1,10 @@
 package com.example.servlets;
 
-import com.example.dao.PurchaseOrderDAO;
-import com.example.dao.SellRequestDAO;
-import com.example.dao.SellerDAO;
+import com.example.dao.*;
 import com.example.models.PurchaseOrder;
 import com.example.models.SellRequest;
-import com.example.service.PurchaseOrderService;
-import com.example.service.SellRequestService;
-import com.example.service.SellerService;
-import com.example.service.UserService;
+import com.example.service.*;
 import com.example.models.User;
-import com.example.dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,17 +20,13 @@ import java.util.List;
 public class SellerMenuServlet extends HttpServlet {
     private SellRequestService sellRequestService;
     private PurchaseOrderService purchaseOrderService;
-    private SellerService sellerService;
+    private SellerDAO sellerDAO; // чтобы получить sellers.id по users.id
 
     @Override
     public void init() {
-        SellRequestDAO requestDAO = new SellRequestDAO();
-        PurchaseOrderDAO orderDAO = new PurchaseOrderDAO();
-        SellerDAO sellerDAO = new SellerDAO();
-
-        this.sellRequestService = new SellRequestService(requestDAO);
-        this.purchaseOrderService = new PurchaseOrderService(orderDAO);
-        this.sellerService = new SellerService(sellerDAO);
+        this.sellRequestService = new SellRequestService(new SellRequestDAO());
+        this.purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
+        this.sellerDAO = new SellerDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -49,14 +39,14 @@ public class SellerMenuServlet extends HttpServlet {
         }
 
         try {
-            // Получаем seller_id из sellers по user.id
-            int sellerId = sellerService.getSellerIdByUserId(user.getId());
+            // Получаем sellers.id по users.id
+            int sellerId = sellerDAO.getSellerIdByUserId(user.getId());
 
-            // Заявки этого продавца
+            // Заявки продавца
             List<SellRequest> myRequests = sellRequestService.getSellRequestsBySeller(sellerId);
             request.setAttribute("myRequests", myRequests);
 
-            // Отклики на заявки этого продавца
+            // Отклики на заявки
             List<PurchaseOrder> allOrders = purchaseOrderService.getOrdersBySeller(sellerId);
             request.setAttribute("allOrders", allOrders);
 

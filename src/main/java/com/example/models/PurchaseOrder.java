@@ -9,6 +9,25 @@ public class PurchaseOrder {
     private int sellRequestId;
     private String status;
     private Timestamp createdAt;
+    private String buyerFullName;
+    private String buyerEmail;
+
+
+    public String getBuyerFullName() {
+        return buyerFullName;
+    }
+
+    public void setBuyerFullName(String buyerFullName) {
+        this.buyerFullName = buyerFullName;
+    }
+
+    public String getBuyerEmail() {
+        return buyerEmail;
+    }
+
+    public void setBuyerEmail(String buyerEmail) {
+        this.buyerEmail = buyerEmail;
+    }
 
     public int getId() {
         return id;

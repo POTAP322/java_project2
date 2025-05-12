@@ -17,21 +17,28 @@ public class PurchaseOrderDAO {
 
     public List<PurchaseOrder> getOrdersBySeller(int sellerId) throws SQLException {
         List<PurchaseOrder> orders = new ArrayList<>();
-        String sql = "SELECT po.id, po.buyer_id, po.sell_request_id, po.status " +
+        String sql = "SELECT po.id, po.buyer_id, po.sell_request_id, po.status, b.full_name, b.email " +
                 "FROM purchase_orders po " +
                 "JOIN sell_requests sr ON po.sell_request_id = sr.id " +
+                "JOIN buyers b ON po.buyer_id = b.id " +
                 "WHERE sr.seller_id = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, sellerId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    PurchaseOrder o = new PurchaseOrder();
-                    o.setId(rs.getInt("id"));
-                    o.setBuyerId(rs.getInt("buyer_id"));
-                    o.setSellRequestId(rs.getInt("sell_request_id"));
-                    o.setStatus(rs.getString("status"));
-                    orders.add(o);
+                    PurchaseOrder order = new PurchaseOrder();
+                    order.setId(rs.getInt("id"));
+                    order.setBuyerId(rs.getInt("buyer_id"));
+                    order.setSellRequestId(rs.getInt("sell_request_id"));
+                    order.setStatus(rs.getString("status"));
+
+                    // Устанавливаем ФИО и email покупателя
+                    order.setBuyerFullName(rs.getString("full_name"));
+                    order.setBuyerEmail(rs.getString("email"));
+
+                    orders.add(order);
                 }
             }
         }
