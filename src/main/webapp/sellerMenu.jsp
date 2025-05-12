@@ -56,6 +56,14 @@
                     Email: ${o.buyerEmail},
                     Заявка ID: ${o.sellRequestId},
                     Статус: ${o.status}
+
+                    <!-- Форма для изменения статуса -->
+                    <form action="update-order-status" method="post" style="margin-top: 5px;">
+                        <input type="hidden" name="order_id" value="${o.id}">
+
+                        <button type="submit" name="action" value="CONFIRMED" style="margin-right: 10px;">Подтвердить</button>
+                        <button type="submit" name="action" value="REJECTED">Отклонить</button>
+                    </form>
                 </li>
             </c:forEach>
         </ul>
