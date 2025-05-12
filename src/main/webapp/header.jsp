@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div style="margin-bottom: 20px;">
+<header>
     <c:if test="${not empty user}">
         <strong>Вы вошли как:</strong> ${user.username} (${user.role}) |
         <a href="home">Домой</a> |
@@ -12,4 +12,4 @@
         </c:if>
         | <a href="logout">Выйти</a>
     </c:if>
-</div>
+</header>

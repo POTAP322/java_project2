@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #353535;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #FF6B01;
+    color: #FFFFFF;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+header a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 10px; /* Отступы слева и справа */
+}
+
+h1, h2, h3 {
+    color: #FF6B01;
+}
+
+button, input[type="submit"] {
+    background-color: #FF6B01;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #e65c00;
+}
+
+input[type="text"], input[type="password"], input[type="email"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+.request {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+/* Стили для центрирования только на странице регистрации и аутентификации */
+.centered-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin-top: 60px; /* Учитываем фиксированный header */
+}
+
+.centered-content {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Общие стили для контента на всех страницах */
+.content {
+    margin-top: 60px; /* Учитываем фиксированный header */
+    padding: 20px;
+}
+
+/* Стили для списков заявок */
+.order-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.order-item h4 {
+    margin-top: 0;
+    color: #FF6B01;
+}
+
+.order-item p {
+    margin: 5px 0;
+}
+
+.order-item .status {
+    font-weight: bold;
+    color: #FF6B01;
+}
