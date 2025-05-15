@@ -15,14 +15,7 @@ import java.sql.SQLException;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
-    private UserService userService;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        UserDAO userDAO = new UserDAO();
-        userService = new UserService(userDAO);
-    }
+    private final UserService userService = new UserService(new UserDAO());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Чтение данных из формы

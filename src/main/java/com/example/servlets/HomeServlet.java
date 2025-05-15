@@ -12,14 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
-    private SellRequestService sellRequestService;
-
-    @Override
-    public void init() {
-        this.sellRequestService = new SellRequestService(new SellRequestDAO());
-    }
+    private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {

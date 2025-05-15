@@ -2,6 +2,7 @@ package com.example.servlets;
 
 import com.example.dao.PurchaseOrderDAO;
 import com.example.service.PurchaseOrderService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,12 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/update-order-status")
 public class UpdateOrderStatusServlet extends HttpServlet {
-    private PurchaseOrderService purchaseOrderService;
-
-    @Override
-    public void init() throws ServletException {
-        this.purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
-    }
+    private final PurchaseOrderService purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int orderId = Integer.parseInt(request.getParameter("order_id"));

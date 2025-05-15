@@ -4,11 +4,9 @@ import com.example.dao.PurchaseOrderDAO;
 import com.example.dao.SellRequestDAO;
 import com.example.models.PurchaseOrder;
 import com.example.models.SellRequest;
+import com.example.models.User;
 import com.example.service.PurchaseOrderService;
 import com.example.service.SellRequestService;
-import com.example.service.UserService;
-import com.example.models.User;
-import com.example.dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,16 +17,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
 @WebServlet("/buyer-menu")
 public class BuyerMenuServlet extends HttpServlet {
-    private PurchaseOrderService purchaseOrderService;
-    private SellRequestService sellRequestService;
-
-    @Override
-    public void init() {
-        this.purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
-        this.sellRequestService = new SellRequestService(new SellRequestDAO());
-    }
+    private final PurchaseOrderService purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
+    private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
