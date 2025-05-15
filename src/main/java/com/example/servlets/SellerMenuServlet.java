@@ -1,10 +1,13 @@
 package com.example.servlets;
 
-import com.example.dao.*;
+import com.example.dao.SellerDAO;
 import com.example.models.PurchaseOrder;
 import com.example.models.SellRequest;
-import com.example.service.*;
+import com.example.service.PurchaseOrderService;
+import com.example.service.SellRequestService;
 import com.example.models.User;
+import com.example.dao.PurchaseOrderDAO;
+import com.example.dao.SellRequestDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,16 +21,9 @@ import java.util.List;
 
 @WebServlet("/seller-menu")
 public class SellerMenuServlet extends HttpServlet {
-    private SellRequestService sellRequestService;
-    private PurchaseOrderService purchaseOrderService;
-    private SellerDAO sellerDAO; // чтобы получить sellers.id по users.id
-
-    @Override
-    public void init() {
-        this.sellRequestService = new SellRequestService(new SellRequestDAO());
-        this.purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
-        this.sellerDAO = new SellerDAO();
-    }
+    private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
+    private final PurchaseOrderService purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
+    private final SellerDAO sellerDAO = new SellerDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);

@@ -18,14 +18,8 @@ import java.time.Instant;
 
 @WebServlet("/create-sell-request")
 public class CreateSellRequestServlet extends HttpServlet {
-    private SellRequestService sellRequestService;
-    private SellerDAO sellerDAO;
-
-    @Override
-    public void init() throws ServletException {
-        this.sellRequestService = new SellRequestService(new SellRequestDAO());
-        this.sellerDAO = new SellerDAO();
-    }
+    private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
+    private final SellerDAO sellerDAO = new SellerDAO();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
@@ -38,11 +32,10 @@ public class CreateSellRequestServlet extends HttpServlet {
         }
 
         try {
-            // Получаем seller_id из таблицы sellers по user.id
             int sellerId = sellerDAO.getSellerIdByUserId(user.getId());
 
             SellRequest sellRequest = new SellRequest();
-            sellRequest.setSellerId(sellerId); // ← Используем sellers.id
+            sellRequest.setSellerId(sellerId);
             sellRequest.setName(request.getParameter("name"));
             sellRequest.setDescription(request.getParameter("description"));
             sellRequest.setPrice(Integer.parseInt(request.getParameter("price")));

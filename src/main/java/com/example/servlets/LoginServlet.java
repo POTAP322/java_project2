@@ -14,15 +14,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserService userService;
-
-    @Override
-    public void init() {
-        userService = new UserService(new UserDAO());
-    }
+    private final UserService userService = new UserService(new UserDAO());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
