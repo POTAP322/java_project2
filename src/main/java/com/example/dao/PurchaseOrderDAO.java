@@ -65,7 +65,7 @@ public class PurchaseOrderDAO {
                     order.setBuyerId(rs.getInt("buyer_id"));
                     order.setSellRequestId(rs.getInt("sell_request_id"));
                     order.setStatus(rs.getString("status"));
-                    order.setCreatedAt(rs.getTimestamp("created_at")); // если есть поле createdAt
+                    order.setCreatedAt(rs.getTimestamp("created_at"));
                     orders.add(order);
                 }
             }
