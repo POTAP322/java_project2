@@ -1,13 +1,16 @@
 package com.example.servlets;
 
+import com.example.dao.BuyerDAO;
 import com.example.dao.SellerDAO;
 import com.example.models.PurchaseOrder;
 import com.example.models.SellRequest;
+import com.example.service.BuyerService;
 import com.example.service.PurchaseOrderService;
 import com.example.service.SellRequestService;
 import com.example.models.User;
 import com.example.dao.PurchaseOrderDAO;
 import com.example.dao.SellRequestDAO;
+import com.example.service.SellerService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +26,7 @@ import java.util.List;
 public class SellerMenuServlet extends HttpServlet {
     private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
     private final PurchaseOrderService purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
-    private final SellerDAO sellerDAO = new SellerDAO();
+    private final SellerService sellerService = new SellerService(new SellerDAO());
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
@@ -36,7 +39,7 @@ public class SellerMenuServlet extends HttpServlet {
 
         try {
             // Получаем sellers.id по users.id
-            int sellerId = sellerDAO.getSellerIdByUserId(user.getId());
+            int sellerId = sellerService.getSellerIdByUserId(user.getId());
 
             // Заявки продавца
             List<SellRequest> myRequests = sellRequestService.getSellRequestsBySeller(sellerId);

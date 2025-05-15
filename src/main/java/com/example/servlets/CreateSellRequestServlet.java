@@ -5,6 +5,7 @@ import com.example.dao.SellerDAO;
 import com.example.models.SellRequest;
 import com.example.models.User;
 import com.example.service.SellRequestService;
+import com.example.service.SellerService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ import java.time.Instant;
 @WebServlet("/create-sell-request")
 public class CreateSellRequestServlet extends HttpServlet {
     private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
-    private final SellerDAO sellerDAO = new SellerDAO();
+    private final SellerService sellerService = new SellerService(new SellerDAO());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
@@ -32,7 +33,7 @@ public class CreateSellRequestServlet extends HttpServlet {
         }
 
         try {
-            int sellerId = sellerDAO.getSellerIdByUserId(user.getId());
+            int sellerId = sellerService.getSellerIdByUserId(user.getId());
 
             SellRequest sellRequest = new SellRequest();
             sellRequest.setSellerId(sellerId);

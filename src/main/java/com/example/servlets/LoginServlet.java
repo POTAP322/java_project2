@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("user", user);
                     response.sendRedirect("home");
-                    return; // ВАЖНО: выйти сразу
+                    return;
                 }
             }
 

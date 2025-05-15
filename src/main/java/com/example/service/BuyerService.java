@@ -15,7 +15,7 @@ public class BuyerService {
     /**
      * Получает ФИО и Email покупателя по его buyers.id
      */
-    public User getBuyerByUserId(int buyerId) throws SQLException {
-        return buyerDAO.getBuyerByUserId(buyerId);
+    public int getBuyerByUserId(int buyerId) throws SQLException {
+        return buyerDAO.getBuyerIdByUserId(buyerId);
     }
 }
