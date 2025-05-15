@@ -20,6 +20,7 @@ public class UserDAO {
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         userId = generatedKeys.getInt(1);
+                        user.setId(userId);
                     }
                 }
 
