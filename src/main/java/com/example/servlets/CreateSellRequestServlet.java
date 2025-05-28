@@ -6,6 +6,7 @@ import com.example.models.SellRequest;
 import com.example.models.User;
 import com.example.service.SellRequestService;
 import com.example.service.SellerService;
+import com.example.service.ServiceManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +20,8 @@ import java.time.Instant;
 
 @WebServlet("/create-sell-request")
 public class CreateSellRequestServlet extends HttpServlet {
-    private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
-    private final SellerService sellerService = new SellerService(new SellerDAO());
+    private final SellRequestService sellRequestService = ServiceManager.getInstance().getSellRequestService();
+    private final SellerService sellerService = ServiceManager.getInstance().getSellerService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
