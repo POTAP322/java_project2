@@ -68,7 +68,7 @@ public class UserDAO {
                         User user = new User();
                         user.setId(resultSet.getInt("id"));
                         user.setUsername(resultSet.getString("username"));
-                        user.setPassword(resultSet.getString("password")); // ✅ Теперь здесь
+                        user.setPassword(resultSet.getString("password"));
                         user.setRole(resultSet.getString("role"));
                         user.setBuyerFullName(resultSet.getString("buyer_full_name"));
                         user.setEmail(resultSet.getString("email"));

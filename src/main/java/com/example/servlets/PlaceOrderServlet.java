@@ -6,6 +6,7 @@ import com.example.service.BuyerService;
 import com.example.models.PurchaseOrder;
 import com.example.service.PurchaseOrderService;
 import com.example.models.User;
+import com.example.service.ServiceManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +19,8 @@ import java.sql.SQLException;
 
 @WebServlet("/place-order")
 public class PlaceOrderServlet extends HttpServlet {
-    private final PurchaseOrderService purchaseOrderService = new PurchaseOrderService(new PurchaseOrderDAO());
-    private final BuyerService buyerService = new BuyerService(new BuyerDAO());
+    private final PurchaseOrderService purchaseOrderService = ServiceManager.getInstance().getPurchaseOrderService();
+    private final BuyerService buyerService = ServiceManager.getInstance().getBuyerService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);

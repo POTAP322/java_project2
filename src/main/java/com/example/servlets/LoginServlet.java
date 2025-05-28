@@ -1,5 +1,6 @@
 package com.example.servlets;
 
+import com.example.service.ServiceManager;
 import com.example.service.UserService;
 import com.example.models.User;
 import com.example.dao.UserDAO;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private final UserService userService = new UserService(new UserDAO());
+    private final UserService userService = ServiceManager.getInstance().getUserService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
@@ -36,7 +37,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
 
-            // Если дошли сюда — значит, логин не найден
+            //если дошли сюда  значит, логин не найден
             request.setAttribute("error", "Неверный логин или пароль");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
 

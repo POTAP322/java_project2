@@ -3,6 +3,7 @@ package com.example.servlets;
 import com.example.dao.SellRequestDAO;
 import com.example.models.SellRequest;
 import com.example.service.SellRequestService;
+import com.example.service.ServiceManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
-    private final SellRequestService sellRequestService = new SellRequestService(new SellRequestDAO());
+    private final SellRequestService sellRequestService = ServiceManager.getInstance().getSellRequestService();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {

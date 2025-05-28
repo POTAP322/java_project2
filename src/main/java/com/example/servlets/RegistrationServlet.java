@@ -1,5 +1,6 @@
 package com.example.servlets;
 
+import com.example.service.ServiceManager;
 import com.example.service.UserService;
 import com.example.models.User;
 import com.example.dao.UserDAO;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
-    private final UserService userService = new UserService(new UserDAO());
+    private final UserService userService = ServiceManager.getInstance().getUserService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Чтение данных из формы
